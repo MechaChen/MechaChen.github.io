@@ -5,19 +5,21 @@
   
   <title>Webpack Paths Alias | Benson&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Part 1 - Intro在檔案數量眾多的情況下，引用檔案時，常會遇到路徑過長問題，例如：     import Utils from &#39;..&#x2F;..&#x2F;..&#x2F;utils&#39;;     import Button from &#39;..&#x2F;..&#x2F;..&#x2F;..&#x2F;src&#x2F;components&#x2F;button&#39;;     import Calendar from &#39;..&#x2F;..&#x2F;.">
+  <meta name="description" content="&amp;nbsp; Part 1 - Intro在檔案數量眾多的情況下，引用檔案時，常會遇到路徑過長問題，例如：     import Utils from &#39;..&#x2F;..&#x2F;..&#x2F;utils&#39;;     import Button from &#39;..&#x2F;..&#x2F;..&#x2F;..&#x2F;src&#x2F;components&#x2F;button&#39;;     import Calendar from &#39;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Webpack Paths Alias">
 <meta property="og:url" content="https://mechachen.github.io/2020/04/14/webpack-paths-alias/index.html">
 <meta property="og:site_name" content="Benson&#39;s Blog">
-<meta property="og:description" content="Part 1 - Intro在檔案數量眾多的情況下，引用檔案時，常會遇到路徑過長問題，例如：     import Utils from &#39;..&#x2F;..&#x2F;..&#x2F;utils&#39;;     import Button from &#39;..&#x2F;..&#x2F;..&#x2F;..&#x2F;src&#x2F;components&#x2F;button&#39;;     import Calendar from &#39;..&#x2F;..&#x2F;.">
+<meta property="og:description" content="&amp;nbsp; Part 1 - Intro在檔案數量眾多的情況下，引用檔案時，常會遇到路徑過長問題，例如：     import Utils from &#39;..&#x2F;..&#x2F;..&#x2F;utils&#39;;     import Button from &#39;..&#x2F;..&#x2F;..&#x2F;..&#x2F;src&#x2F;components&#x2F;button&#39;;     import Calendar from &#39;">
 <meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://mechachen.github.io/2020/04/14/webpack-paths-alias/images/webpack.jpg">
 <meta property="article:published_time" content="2020-04-14T09:25:55.000Z">
-<meta property="article:modified_time" content="2020-04-14T10:11:13.599Z">
+<meta property="article:modified_time" content="2020-04-30T09:58:10.613Z">
 <meta property="article:author" content="Benson Chen">
 <meta property="article:tag" content="webpack">
 <meta property="article:tag" content="tsconfig">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mechachen.github.io/2020/04/14/webpack-paths-alias/images/webpack.jpg">
   
   <link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css">
   <script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
@@ -70,12 +72,6 @@
             <a href="/about" class="nav-menu ">ABOUT</a>
           
         
-            <a href="/categories" class="nav-menu ">CATEGORIES</a>
-          
-        
-            <a href="/tags" class="nav-menu ">TAGS</a>
-          
-        
       
     </div>
   </div>
@@ -84,25 +80,57 @@
   <h2 class="title">Webpack Paths Alias</h2>
   <p class="sub">4月 14, 2020</p>
   <article class="content">
-    <h2 id="Part-1-Intro"><a href="#Part-1-Intro" class="headerlink" title="Part 1 - Intro"></a>Part 1 - Intro</h2><p>在檔案數量眾多的情況下，引用檔案時，常會遇到路徑過長問題，例如：</p>
+    <p><img src="/images/webpack.jpg" alt=""><br>&nbsp;</p>
+<h2 id="Part-1-Intro"><a href="#Part-1-Intro" class="headerlink" title="Part 1 - Intro"></a>Part 1 - Intro</h2><p>在檔案數量眾多的情況下，引用檔案時，常會遇到路徑過長問題，例如：</p>
 <pre><code class="js">    import Utils from &#39;../../../utils&#39;;
     import Button from &#39;../../../../src/components/button&#39;;
     import Calendar from &#39;../../../../src/components/shared/Calendar&#39;;</code></pre>
-<p><br>這樣不但輸入上很冗長，且也造成路徑不便閱讀</p>
-<p>在 Webpack 環境下，我們可以設定一些常用的路徑，省去多層相對路徑的困擾<br>在 webpack.config.js 中，可以做以下的設定：</p>
+<p>&nbsp;<br>這樣不但輸入上很冗長，且也造成路徑不便閱讀<br>在 Webpack 環境下，我們可以設定一些常用的路徑，省去多層相對路徑的困擾<br>&nbsp;<br>&nbsp;<br>在 <code>webpack.config.js</code> 中，可以做以下的設定：</p>
 <pre><code class="js">    module.exports = {
         ...,
         resolve: {
             alias: {
-                &#39;@component&#39;: &#39;./src/components&#39;,
-                &#39;@shared&#39;: &#39;./src/components/shared&#39;,
+                &#39;@component&#39;: &#39;./src/components/&#39;,
+                &#39;@shared&#39;: &#39;./src/components/shared/&#39;,
+                &#39;@utils&#39;: &#39;./utils&#39;,
+                &#39;@submodules&#39;: &#39;./submodules/&#39;,
+                &#39;@json&#39;: &#39;./src/components/json&#39;,
             }
         }
         ...,
     }</code></pre>
-<h2 id="Part2-WildCard"><a href="#Part2-WildCard" class="headerlink" title="Part2 - WildCard"></a>Part2 - WildCard</h2>
+<p>&nbsp;<br>&nbsp;</p>
+<h2 id="Part-2-Alias-Forms"><a href="#Part-2-Alias-Forms" class="headerlink" title="Part 2 - Alias Forms"></a>Part 2 - Alias Forms</h2><p>在設定 alias 時，引入的形式可分為 4 種</p>
+<p>&ensp;&ensp;1. 資料夾<br>&ensp;&ensp;2. 特定檔案<br>&ensp;&ensp;3. Index.js<br>&ensp;&ensp;4. Node Modules</p>
+<p>( 在此 root 資料夾為 abc )<br>&nbsp;</p>
+<p><strong>1. 資料夾</strong></p>
+<table>
+<thead>
+<tr>
+<th>No.</th>
+<th>Alias</th>
+<th>import ‘xyz’</th>
+<th>import ‘xyz/file.js’</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1.</td>
+<td>{ xyz: path.resolve(__dirname, ‘src/utilities’) }</td>
+<td>/abc/src/utilities/</td>
+<td>/abc/src/utilities/file.js</td>
+</tr>
+<tr>
+<td>2.</td>
+<td>{ xyz: path.resolve(__dirname, ‘src/templates’) }</td>
+<td>/abc/src/templates/</td>
+<td>/abc/src/templates/file.js</td>
+</tr>
+</tbody></table>
+
   </article>
   <footer class="f-cf">
+    
+      <a href="/2020/04/29/git-flow/" class="link f-fl">⟵Git Flow</a>
     
     
       <a href="/2020/04/08/redux/" class="link f-fr">Redux⟶</a>

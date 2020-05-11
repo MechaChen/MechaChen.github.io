@@ -8,18 +8,18 @@
   <meta name="description" content="&amp;nbsp; Part 1 - Intro在檔案數量眾多的情況下，引用檔案時，常會遇到路徑過長問題，例如：     import Utils from &#39;..&#x2F;..&#x2F;..&#x2F;utils&#39;;     import Button from &#39;..&#x2F;..&#x2F;..&#x2F;..&#x2F;src&#x2F;components&#x2F;button&#39;;     import Calendar from &#39;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Webpack Paths Alias">
-<meta property="og:url" content="https://mechachen.github.io/2020/04/14/webpack-paths-alias/index.html">
+<meta property="og:url" content="https://mechachen.github.io/2020/05/05/webpack-paths-alias/index.html">
 <meta property="og:site_name" content="Benson&#39;s Blog">
 <meta property="og:description" content="&amp;nbsp; Part 1 - Intro在檔案數量眾多的情況下，引用檔案時，常會遇到路徑過長問題，例如：     import Utils from &#39;..&#x2F;..&#x2F;..&#x2F;utils&#39;;     import Button from &#39;..&#x2F;..&#x2F;..&#x2F;..&#x2F;src&#x2F;components&#x2F;button&#39;;     import Calendar from &#39;">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://mechachen.github.io/2020/04/14/webpack-paths-alias/images/webpack.jpg">
-<meta property="article:published_time" content="2020-04-14T09:25:55.000Z">
-<meta property="article:modified_time" content="2020-04-30T09:58:10.613Z">
+<meta property="og:image" content="https://mechachen.github.io/2020/05/05/webpack-paths-alias/images/webpack.jpg">
+<meta property="article:published_time" content="2020-05-05T09:25:55.000Z">
+<meta property="article:modified_time" content="2020-05-05T02:10:47.716Z">
 <meta property="article:author" content="Benson Chen">
 <meta property="article:tag" content="webpack">
 <meta property="article:tag" content="tsconfig">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://mechachen.github.io/2020/04/14/webpack-paths-alias/images/webpack.jpg">
+<meta name="twitter:image" content="https://mechachen.github.io/2020/05/05/webpack-paths-alias/images/webpack.jpg">
   
   <link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css">
   <script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
@@ -66,6 +66,12 @@
             <a href="/" class="nav-menu ">HOME</a>
           
         
+            <a href="/categories" class="nav-menu ">CATEGORIES</a>
+          
+        
+            <a href="/tags" class="nav-menu ">TAGS</a>
+          
+        
             <a href="/archives" class="nav-menu ">ARCHIVE</a>
           
         
@@ -78,7 +84,7 @@
 </nav>
     <div id="main"><section class="article">
   <h2 class="title">Webpack Paths Alias</h2>
-  <p class="sub">4月 14, 2020</p>
+  <p class="sub">5月 5, 2020</p>
   <article class="content">
     <p><img src="/images/webpack.jpg" alt=""><br>&nbsp;</p>
 <h2 id="Part-1-Intro"><a href="#Part-1-Intro" class="headerlink" title="Part 1 - Intro"></a>Part 1 - Intro</h2><p>在檔案數量眾多的情況下，引用檔案時，常會遇到路徑過長問題，例如：</p>
@@ -102,38 +108,83 @@
 <p>&nbsp;<br>&nbsp;</p>
 <h2 id="Part-2-Alias-Forms"><a href="#Part-2-Alias-Forms" class="headerlink" title="Part 2 - Alias Forms"></a>Part 2 - Alias Forms</h2><p>在設定 alias 時，引入的形式可分為 4 種</p>
 <p>&ensp;&ensp;1. 資料夾<br>&ensp;&ensp;2. 特定檔案<br>&ensp;&ensp;3. Index.js<br>&ensp;&ensp;4. Node Modules</p>
-<p>( 在此 root 資料夾為 abc )<br>&nbsp;</p>
-<p><strong>1. 資料夾</strong></p>
-<table>
-<thead>
-<tr>
-<th>No.</th>
-<th>Alias</th>
-<th>import ‘xyz’</th>
-<th>import ‘xyz/file.js’</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1.</td>
-<td>{ xyz: path.resolve(__dirname, ‘src/utilities’) }</td>
-<td>/abc/src/utilities/</td>
-<td>/abc/src/utilities/file.js</td>
-</tr>
-<tr>
-<td>2.</td>
-<td>{ xyz: path.resolve(__dirname, ‘src/templates’) }</td>
-<td>/abc/src/templates/</td>
-<td>/abc/src/templates/file.js</td>
-</tr>
-</tbody></table>
+<p>( 在此 root 資料夾為 abc )<br>&nbsp;<br>&nbsp;</p>
+<p><strong>1. 資料夾</strong><br><img src="folder.png" alt=""></p>
+<hr>
+<p>&nbsp;</p>
+<p>利用 webpack alias 可以指定到特定的資料夾，若想要引入特定檔案，則可以指定 alias 底下的檔案，可以省去繁複相對路徑的困擾</p>
+<p>&nbsp;<br>&nbsp;</p>
+<p><strong>2. 特定檔案</strong><br><img src="specific-file.png" alt=""></p>
+<hr>
+<p>&nbsp;</p>
+<ul>
+<li><strong>絕對路徑 + 特定檔案</strong><br>直接引入即可使用，&nbsp;<br>但已為一檔案，引入 alias 下的檔案會顯示錯誤</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
+<li><strong>$ + 絕對路徑 + 特定檔案</strong><br>直接引入即可使用，&nbsp;<br>但已為一檔案，引入 alias 下的檔案會被視為 <strong>not EXACT MATCH</strong>，&nbsp;<br>會直接忽略 alias 設定，直接視為 node modules 下的 xyz 的 file.js</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
+<li><strong>相對路徑 + 特定檔案</strong><br>以 root 為起始，指定到相對下的檔案路徑，&nbsp;<br>但已為一檔案，引入 alias 下的檔案會顯示錯誤</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
+<li><strong>$ + 相對路徑 + 特定檔案</strong><br>以 root 為起始，指定到相對下的檔案路徑，&nbsp;<br>但已為一檔案，引入 alias 下的檔案會被視為 <strong>not EXACT MATCH</strong>，&nbsp;<br>會直接忽略 alias 設定，直接視為 node modules 下的 xyz 的 file.js</li>
+</ul>
+<p>&nbsp;<br>&nbsp;</p>
+<p><strong>3. Index</strong></p>
+<pre><code class="js">    引入資料夾的位置，但最後不加反斜線，即可引入 index.js 檔</code></pre>
+<h2 id=""><a href="#" class="headerlink" title=""></a><img src="index.png" alt=""></h2><p>&nbsp;</p>
+<ul>
+<li><strong>絕對路徑 + 特定檔案</strong><br>直接引入即可使用，&nbsp;<br>index </li>
+</ul>
+<p>&nbsp;</p>
+<ul>
+<li><strong>$ + 絕對路徑 + 特定檔案</strong><br>直接引入即可使用，引入的檔案為 <pre><code class="js">   /some/dir/index.js </code></pre>
+&nbsp;<br>但已為一檔案，引入 alias 下的檔案會被視為 <strong>not EXACT MATCH</strong>，&nbsp;<br>會直接忽略 alias 設定，直接視為 node modules 下的 xyz 的 file.js</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
+<li><strong>相對路徑 + 特定檔案</strong><br>以 root 為起始，指定到相對下的檔案路徑，&nbsp;<br>但已為一檔案，引入 alias 下的檔案會顯示錯誤</li>
+</ul>
+<p>&nbsp;<br>&nbsp;</p>
+<p><strong>4. Node Modules</strong><br><img src="node-modules.png" alt=""></p>
+<hr>
+<p>&nbsp;</p>
+<ul>
+<li><strong>無</strong><br>直接引入即可使用</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
+<li><strong>特定名稱</strong><br>如果為直接引入，引入的檔案為 index<pre><code class="js">      /abc/node_modules/modu/index.js</code></pre>
+&nbsp;<br>若引入名稱下的檔案，則引入的為該檔案<pre><code class="js">      /abc/node_modules/modu/file.js</code></pre>
+</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
+<li><strong>$ + 特定名稱</strong><br>如果為直接引入，引入的檔案為 index<pre><code class="js">      /abc/node_modules/modu/index.js</code></pre>
+&nbsp;<br>若引入名稱下的檔案，則引入的為該檔案<pre><code class="js">      /abc/node_modules/modu/file.js</code></pre>
+</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
+<li><strong>特定名稱下的檔案</strong><br>直接引入即可，&nbsp;<br>但已為一檔案，引入 alias 下的檔案會顯示錯誤</li>
+</ul>
+<p>&nbsp;</p>
+<ul>
+<li><strong>特定名稱 + 指定 folder</strong><br>直接引入為該 folder 下的 index.js，&nbsp;<br>若引入其下檔案則為該檔案 </li>
+</ul>
+<p>&nbsp;</p>
+<ul>
+<li><strong>$ + 特定名稱 + 指定 folder</strong><br>直接引入為該 folder 下的 index.js，&nbsp;<br>但已為一檔案，引入 alias 下的檔案會被視為 <strong>not EXACT MATCH</strong>，&nbsp;<br>會直接忽略 alias 設定，直接視為 node modules 下的 xyz 的 file.js</li>
+</ul>
 
   </article>
   <footer class="f-cf">
     
-      <a href="/2020/04/29/git-flow/" class="link f-fl">⟵Git Flow</a>
     
-    
-      <a href="/2020/04/08/redux/" class="link f-fr">Redux⟶</a>
+      <a href="/2020/04/08/json-web-token/" class="link f-fr">JSON Web Token⟶</a>
     
   </footer>
 </section></div>
